@@ -32954,7 +32954,7 @@ function handleIssueEdited(options) {
     return action_awaiter(this, void 0, void 0, function* () {
         const { notion, payload, octokit } = options;
         core.info(`Querying database for page with github id ${payload.issue.id}`);
-        const query = yield notion.client.databases.query({
+        let query = yield notion.client.databases.query({
             database_id: notion.databaseId,
             filter: {
                 property: 'ID',
@@ -32998,6 +32998,16 @@ function handleIssueEdited(options) {
                 },
                 properties: yield parsePropertiesFromPayload({ payload, octokit }),
                 children: bodyBlocks,
+            });
+            query = yield notion.client.databases.query({
+                database_id: notion.databaseId,
+                filter: {
+                    property: 'ID',
+                    number: {
+                        equals: payload.issue.id,
+                    },
+                },
+                page_size: 1,
             });
         }
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
