@@ -31,7 +31,13 @@ async function start() {
 
     await run(options);
   } catch (e) {
-    core.setFailed(e instanceof Error ? e.message : e + '');
+    if (e instanceof Error) {
+      console.error(e.stack);
+      core.setFailed(e.message);
+      return;
+    }
+    console.error(e);
+    core.setFailed(e + '');
   }
 }
 
