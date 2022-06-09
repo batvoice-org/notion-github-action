@@ -34130,7 +34130,7 @@ function handleIssueOpened(options) {
                 payload,
                 octokit: options.octokit,
             }),
-            children: getBodyChildrenBlocks(payload.issue.body),
+            // children: getBodyChildrenBlocks(payload.issue.body),
         });
     });
 }
@@ -34149,7 +34149,7 @@ function handleIssueEdited(options) {
             },
             page_size: 1,
         });
-        const bodyBlocks = getBodyChildrenBlocks(payload.issue.body);
+        // const bodyBlocks = getBodyChildrenBlocks(payload.issue.body);
         if (query.results.length > 0) {
             const pageId = query.results[0].id;
             core.info(`Query successful: Page ${pageId}`);
@@ -34158,22 +34158,32 @@ function handleIssueEdited(options) {
                 page_id: pageId,
                 properties: yield parsePropertiesFromPayload({ payload, octokit }),
             });
-            const existingBlocks = (yield notion.client.blocks.children.list({
-                block_id: pageId,
-            })).results;
-            const overlap = Math.min(bodyBlocks.length, existingBlocks.length);
-            yield Promise.all(bodyBlocks.slice(0, overlap).map((block, index) => notion.client.blocks.update(Object.assign({ block_id: existingBlocks[index].id }, block))));
-            if (bodyBlocks.length > existingBlocks.length) {
-                yield notion.client.blocks.children.append({
-                    block_id: pageId,
-                    children: bodyBlocks.slice(overlap),
-                });
-            }
-            else if (bodyBlocks.length < existingBlocks.length) {
-                yield Promise.all(existingBlocks
-                    .slice(overlap)
-                    .map(block => notion.client.blocks.delete({ block_id: block.id })));
-            }
+            // const existingBlocks = (
+            //   await notion.client.blocks.children.list({
+            //     block_id: pageId,
+            //   })
+            // ).results;
+            // const overlap = Math.min(bodyBlocks.length, existingBlocks.length);
+            // await Promise.all(
+            //   bodyBlocks.slice(0, overlap).map((block, index) =>
+            //     notion.client.blocks.update({
+            //       block_id: existingBlocks[index].id,
+            //       ...block,
+            //     })
+            //   )
+            // );
+            // if (bodyBlocks.length > existingBlocks.length) {
+            //   await notion.client.blocks.children.append({
+            //     block_id: pageId,
+            //     children: bodyBlocks.slice(overlap),
+            //   });
+            // } else if (bodyBlocks.length < existingBlocks.length) {
+            //   await Promise.all(
+            //     existingBlocks
+            //       .slice(overlap)
+            //       .map(block => notion.client.blocks.delete({block_id: block.id}))
+            //   );
+            // }
         }
         else {
             core.warning(`Could not find page with github id ${payload.issue.id}, creating a new one`);
@@ -34182,7 +34192,7 @@ function handleIssueEdited(options) {
                     database_id: notion.databaseId,
                 },
                 properties: yield parsePropertiesFromPayload({ payload, octokit }),
-                children: bodyBlocks,
+                // children: bodyBlocks,
             });
             query = yield notion.client.databases.query({
                 database_id: notion.databaseId,
@@ -34634,7 +34644,7 @@ function createPages(notion, databaseId, pagesToCreate, octokit) {
             return notion.pages.create({
                 parent: { database_id: databaseId },
                 properties: yield getPropertiesFromIssue(issue, octokit),
-                children: (0, action_1.getBodyChildrenBlocks)(issue.body || ''),
+                // children: getBodyChildrenBlocks(issue.body || ''),
             });
         })));
     });

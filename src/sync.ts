@@ -3,7 +3,7 @@ import {Issue} from '@octokit/webhooks-types/schema';
 import * as core from '@actions/core';
 import {Octokit} from 'octokit';
 import {CustomValueMap, properties} from './properties';
-import {getBodyChildrenBlocks, getProjectData} from './action';
+import {getProjectData} from './action';
 import {QueryDatabaseResponse} from '@notionhq/client/build/src/api-endpoints';
 import {CustomTypes} from './api-types';
 // import {parseBodyRichText} from './action';
@@ -123,7 +123,7 @@ async function createPages(
       notion.pages.create({
         parent: {database_id: databaseId},
         properties: await getPropertiesFromIssue(issue, octokit),
-        children: getBodyChildrenBlocks(issue.body || ''),
+        // children: getBodyChildrenBlocks(issue.body || ''),
       })
     )
   );
