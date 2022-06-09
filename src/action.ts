@@ -137,7 +137,7 @@ async function handleIssueOpened(options: IssueOpenedOptions) {
       payload,
       octokit: options.octokit,
     }),
-    children: getBodyChildrenBlocks(payload.issue.body),
+    // children: getBodyChildrenBlocks(payload.issue.body),
   });
 }
 
