@@ -38,7 +38,7 @@ async function parsePropertiesFromPayload(options: PayloadParsingOptions): Promi
     Organization: properties.text(payload.organization?.login ?? ''),
     Repository: properties.text(payload.repository.name),
     Number: properties.number(payload.issue.number),
-    Body: properties.richText(parseBodyRichText(payload.issue.body)),
+    // Body: properties.richText(parseBodyRichText(payload.issue.body)),
     Assignees: properties.multiSelect(payload.issue.assignees.map(assignee => assignee.login)),
     Milestone: properties.text(payload.issue.milestone?.title ?? ''),
     Labels: properties.multiSelect(payload.issue.labels?.map(label => label.name) ?? []),

@@ -34064,7 +34064,7 @@ function parsePropertiesFromPayload(options) {
             Organization: properties_1.properties.text((_c = (_b = payload.organization) === null || _b === void 0 ? void 0 : _b.login) !== null && _c !== void 0 ? _c : ''),
             Repository: properties_1.properties.text(payload.repository.name),
             Number: properties_1.properties.number(payload.issue.number),
-            Body: properties_1.properties.richText(parseBodyRichText(payload.issue.body)),
+            // Body: properties.richText(parseBodyRichText(payload.issue.body)),
             Assignees: properties_1.properties.multiSelect(payload.issue.assignees.map(assignee => assignee.login)),
             Milestone: properties_1.properties.text((_e = (_d = payload.issue.milestone) === null || _d === void 0 ? void 0 : _d.title) !== null && _e !== void 0 ? _e : ''),
             Labels: properties_1.properties.multiSelect((_g = (_f = payload.issue.labels) === null || _f === void 0 ? void 0 : _f.map(label => label.name)) !== null && _g !== void 0 ? _g : []),
@@ -34531,7 +34531,6 @@ exports.syncNotionDBWithGitHub = exports.createIssueMapping = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const properties_1 = __nccwpck_require__(1434);
 const action_1 = __nccwpck_require__(7672);
-const action_2 = __nccwpck_require__(7672);
 function createIssueMapping(notion, databaseId) {
     return __awaiter(this, void 0, void 0, function* () {
         const issuePageIds = new Map();
@@ -34652,7 +34651,9 @@ function createMultiSelectObjects(issue) {
 }
 function getPropertiesFromIssue(issue, octokit) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { number, title, state, id, milestone, created_at, updated_at, body, repository_url, user, html_url, } = issue;
+        const { number, title, state, id, milestone, created_at, updated_at, 
+        // body,
+        repository_url, user, html_url, } = issue;
         const author = user === null || user === void 0 ? void 0 : user.login;
         const { assigneesObject, labelsObject } = createMultiSelectObjects(issue);
         const urlComponents = repository_url.split('/');
@@ -34669,7 +34670,7 @@ function getPropertiesFromIssue(issue, octokit) {
             Status: properties_1.properties.getStatusSelectOption(state),
             Organization: properties_1.properties.text(org),
             Repository: properties_1.properties.text(repo),
-            Body: properties_1.properties.richText((0, action_2.parseBodyRichText)(body || '')),
+            // Body: properties.richText(parseBodyRichText(body || '')),
             Number: properties_1.properties.number(number),
             Assignees: properties_1.properties.multiSelect(assigneesObject),
             Milestone: properties_1.properties.text(milestone ? milestone.title : ''),

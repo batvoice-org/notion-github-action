@@ -6,7 +6,7 @@ import {CustomValueMap, properties} from './properties';
 import {getBodyChildrenBlocks, getProjectData} from './action';
 import {QueryDatabaseResponse} from '@notionhq/client/build/src/api-endpoints';
 import {CustomTypes} from './api-types';
-import {parseBodyRichText} from './action';
+// import {parseBodyRichText} from './action';
 
 type PageIdAndIssueNumber = {
   pageId: string;
@@ -151,7 +151,7 @@ async function getPropertiesFromIssue(issue: Issue, octokit: Octokit): Promise<C
     milestone,
     created_at,
     updated_at,
-    body,
+    // body,
     repository_url,
     user,
     html_url,
@@ -174,7 +174,7 @@ async function getPropertiesFromIssue(issue: Issue, octokit: Octokit): Promise<C
     Status: properties.getStatusSelectOption(state!),
     Organization: properties.text(org),
     Repository: properties.text(repo),
-    Body: properties.richText(parseBodyRichText(body || '')),
+    // Body: properties.richText(parseBodyRichText(body || '')),
     Number: properties.number(number),
     Assignees: properties.multiSelect(assigneesObject),
     Milestone: properties.text(milestone ? milestone.title : ''),
