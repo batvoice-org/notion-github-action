@@ -166,7 +166,7 @@ async function handleIssueEdited(options: IssueEditedOptions) {
     page_size: 1,
   });
 
-  const bodyBlocks = getBodyChildrenBlocks(payload.issue.body);
+  // const bodyBlocks = getBodyChildrenBlocks(payload.issue.body);
 
   if (query.results.length > 0) {
     const pageId = query.results[0].id;
@@ -179,35 +179,35 @@ async function handleIssueEdited(options: IssueEditedOptions) {
       properties: await parsePropertiesFromPayload({payload, octokit}),
     });
 
-    const existingBlocks = (
-      await notion.client.blocks.children.list({
-        block_id: pageId,
-      })
-    ).results;
+    // const existingBlocks = (
+    //   await notion.client.blocks.children.list({
+    //     block_id: pageId,
+    //   })
+    // ).results;
 
-    const overlap = Math.min(bodyBlocks.length, existingBlocks.length);
+    // const overlap = Math.min(bodyBlocks.length, existingBlocks.length);
 
-    await Promise.all(
-      bodyBlocks.slice(0, overlap).map((block, index) =>
-        notion.client.blocks.update({
-          block_id: existingBlocks[index].id,
-          ...block,
-        })
-      )
-    );
+    // await Promise.all(
+    //   bodyBlocks.slice(0, overlap).map((block, index) =>
+    //     notion.client.blocks.update({
+    //       block_id: existingBlocks[index].id,
+    //       ...block,
+    //     })
+    //   )
+    // );
 
-    if (bodyBlocks.length > existingBlocks.length) {
-      await notion.client.blocks.children.append({
-        block_id: pageId,
-        children: bodyBlocks.slice(overlap),
-      });
-    } else if (bodyBlocks.length < existingBlocks.length) {
-      await Promise.all(
-        existingBlocks
-          .slice(overlap)
-          .map(block => notion.client.blocks.delete({block_id: block.id}))
-      );
-    }
+    // if (bodyBlocks.length > existingBlocks.length) {
+    //   await notion.client.blocks.children.append({
+    //     block_id: pageId,
+    //     children: bodyBlocks.slice(overlap),
+    //   });
+    // } else if (bodyBlocks.length < existingBlocks.length) {
+    //   await Promise.all(
+    //     existingBlocks
+    //       .slice(overlap)
+    //       .map(block => notion.client.blocks.delete({block_id: block.id}))
+    //   );
+    // }
   } else {
     core.warning(`Could not find page with github id ${payload.issue.id}, creating a new one`);
 
@@ -216,7 +216,7 @@ async function handleIssueEdited(options: IssueEditedOptions) {
         database_id: notion.databaseId,
       },
       properties: await parsePropertiesFromPayload({payload, octokit}),
-      children: bodyBlocks,
+      // children: bodyBlocks,
     });
 
     query = await notion.client.databases.query({
